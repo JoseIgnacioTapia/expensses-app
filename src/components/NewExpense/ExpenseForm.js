@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import './ExpenseForm.css';
 
-const ExpenseForm = () => {
+const initialValues = {
+  enteredTitle: '',
+  enteredAmount: '',
+  enteredDate: '',
+};
+
+const ExpenseForm = props => {
   // const [enteredTitle, setEnteredTitle] = useState('');
   // const [enteredAmount, setEnteredAmount] = useState('');
   // const [enteredDate, setEnteredDate] = useState('');
   // You can use other way to save the differents states
-  const [userInput, setUserInput] = useState({
-    enteredTitle: '',
-    enteredAmount: '',
-    enteredDate: '',
-  });
+  const [userInput, setUserInput] = useState(initialValues);
 
   const titleChangeHandler = e => {
     // setEnteredTitle(e.target.value);
@@ -26,26 +28,36 @@ const ExpenseForm = () => {
 
   const amountChangeHandler = e => {
     // setEnteredAmount(e.target.value);
-    setUserInput({
-      ...userInput,
-      enteredAmount: e.target.value,
+    setUserInput(prevState => {
+      return { ...userInput, enteredAmount: e.target.value };
     });
   };
 
   const dateChangeHandle = e => {
     // setEnteredDate(e.target.value);
-    setUserInput({
-      ...userInput,
-      enteredDate: e.target.value,
+    setUserInput(prevState => {
+      return { ...userInput, enteredDate: e.target.value };
     });
   };
 
+  const submitHandler = e => {
+    e.preventDefault();
+
+    console.log(userInput);
+    props.onSaveExpenseData(userInput);
+    // setUserInput(initialValues);
+  };
+
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
-          <input type="text" onChange={titleChangeHandler} />
+          <input
+            type="text"
+            value={userInput.enteredTitle}
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label>Amount</label>
@@ -53,6 +65,7 @@ const ExpenseForm = () => {
             type="number"
             min="0.01"
             step="0.01"
+            value={userInput.enteredAmount}
             onChange={amountChangeHandler}
           />
         </div>
@@ -62,6 +75,7 @@ const ExpenseForm = () => {
             type="date"
             min="2020-01-01"
             max="2023-12-31"
+            value={userInput.enteredDate}
             onChange={dateChangeHandle}
           />
         </div>
