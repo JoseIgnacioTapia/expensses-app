@@ -27,7 +27,7 @@ const ExpenseForm = props => {
   };
 
   const amountChangeHandler = e => {
-    setEnteredAmount(+e.target.value);
+    setEnteredAmount(e.target.value);
     // setUserInput(prevState => {
     //   return { ...userInput, enteredAmount: +e.target.value };
     // });
